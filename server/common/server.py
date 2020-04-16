@@ -4,6 +4,7 @@ import logging
 class Server:
     def __init__(self, port, listen_backlog):
         # Initialize server socket
+        print(port)
         self._server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._server_socket.bind(('', port))
         self._server_socket.listen(listen_backlog)
@@ -52,7 +53,7 @@ class Server:
         """
 
         # Connection arrived
-        logging.info("Proceed to accept new connections")
+        logging.info("Proceed to accept new connections at port {}".format(self._server_socket.getsockname()))
         c, addr = self._server_socket.accept()
         logging.info('Got connection from {}'.format(addr))
         return c
