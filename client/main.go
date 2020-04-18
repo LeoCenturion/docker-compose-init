@@ -12,7 +12,7 @@ import (
 
 // InitConfig Function that uses viper library to parse env variables. If
 // some of the variables cannot be parsed, an error is returned
-func InitConfig() (*viper.Viper, error) {
+func InitConfigEnv() (*viper.Viper, error) {
 	v := viper.New()
 
 	// Configure viper to read env variables with the CLI_ prefix
@@ -25,6 +25,12 @@ func InitConfig() (*viper.Viper, error) {
 	v.BindEnv("loop", "period")
 	v.BindEnv("loop", "lapse")
 
+	//config file
+	v.SetConfigName("config")
+	v.SetConfigType("yaml")
+	v.AddConfigPath("/config/")
+	e := v.ReadInConfig()
+
 	// Parse time.Duration variables and return an error
 	// if those variables cannot be parsed
 	if _, err := time.ParseDuration(v.GetString("loop_lapse")); err != nil {
@@ -35,20 +41,21 @@ func InitConfig() (*viper.Viper, error) {
 		return nil, errors.Wrapf(err, "Could not parse CLI_LOOP_PERIOD env var as time.Duration.")
 	}
 
-	return v, nil
+	return v, e
 }
 
+
 func main() {
-	v, err := InitConfig()
-	if err != nil {
-		log.Fatalf("%s", err)
+	config, config_err := InitConfigEnv()
+	if config_err != nil {
+		log.Fatalf("%s", config_err)
 	}
 
 	clientConfig := common.ClientConfig{
-		ServerAddress: v.GetString("server_address"),
-		ID:            v.GetString("id"),
-		LoopLapse:     v.GetDuration("loop_lapse"),
-		LoopPeriod:    v.GetDuration("loop_period"),
+		ServerAddress: config.GetString("server_address"),
+		ID:            config.GetString("id"),
+		LoopLapse:     config.GetDuration("loop_lapse"),
+		LoopPeriod:    config.GetDuration("loop_period"),
 	}
 
 	client := common.NewClient(clientConfig)

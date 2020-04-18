@@ -6,14 +6,13 @@ import logging
 import configparser
 import sys
 from common.server import Server
-CONFIG_PATH = ""
-DEFAULT_PARAMS = {"SERVER_PORT","SERVER_LISTEN_BACKLOG"}
+CONFIG_PATH = "config.ini"
 
 def parse_param(path, env, param):
 	config = configparser.ConfigParser()
 	config.read(path)
-	print(param)
-	print(os.getenv(param))
+	print("{} config: {}".format(param, env in config  and config[env][param]) )
+	print("{} env: {}".format(param, os.getenv(param,None)))
 	try:
 		return int(env in config  and config[env][param] or os.getenv(param))
 	except KeyError as e:
@@ -21,7 +20,7 @@ def parse_param(path, env, param):
 	except ValueError as e:
 		raise ValueError("Key could not be parsed. Error: {}. Aborting server".format(e))
 
-def parse_config_params(environment):
+def parse_config_params(environment, config_path):
 	""" Parse env variables to find program config params
 
 	Function that search and parse program configuration parameters in the
@@ -30,7 +29,6 @@ def parse_config_params(environment):
 	be parsed, a ValueError is thrown. If parsing succeeded, the function
 	returns a map with the env variables
 	"""
-	config_path = CONFIG_PATH
 	config_params = {}
 	parse_param_binded = lambda param: parse_param(config_path, environment, param)
 
@@ -51,7 +49,7 @@ def main():
 
 	args = parse_clargs();
 	initialize_log()
-	config_params = parse_config_params(args.get('environment') or 'development')
+	config_params = parse_config_params(args.get('environment') or 'DEVELOPMENT', args.get('config') or CONFIG_PATH)
 
 	# Initialize server and start server loop
 	server = Server(config_params["port"], config_params["listen_backlog"])
