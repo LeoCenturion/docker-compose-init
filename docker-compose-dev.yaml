@@ -11,6 +11,9 @@ services:
     networks:
       testing_net:
         ipv4_address: 172.24.125.2
+    volumes:
+      - server-vol:/config
+
 
   client1:
     container_name: client1
@@ -50,6 +53,7 @@ services:
       - server
 volumes:
   client-vol:
+  server-vol:
 networks:
   testing_net:
     ipam:

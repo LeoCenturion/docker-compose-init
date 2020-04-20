@@ -6,7 +6,7 @@ import logging
 import configparser
 import sys
 from common.server import Server
-CONFIG_PATH = "config.ini"
+CONFIG_PATH = "/config/config.ini"
 
 def parse_param(path, env, param):
 	config = configparser.ConfigParser()
