@@ -34,6 +34,7 @@ docker-compose-logs:
 .PHONY: docker-compose-logs
 
 test:
-	docker run --network=dockercomposeinit_testing_net --rm alpine:latest sh -c "echo 1111 | nc 172.24.125.2 12345" | egrep -iuc "1111"  | (read line; if [[ $line -ge 1 ]]; then echo "server working properly"; else echo "go fix your server"; fi)
+	sudo ./server/healthcheck.sh
+
 
 .PHONY: test

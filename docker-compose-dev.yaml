@@ -11,7 +11,7 @@ services:
       - SERVER_LISTEN_BACKLOG=5
     networks:
       testing_net:
-        ipv4_address: 172.24.125.2
+        ipv4_address: 172.24.125.2 #server ip DO NOT DELETE COMMENT
 
   client1:
     container_name: client1
