@@ -1,6 +1,6 @@
 import socket
 import logging
-
+from _thread import start_new_thread
 class Server:
     def __init__(self, port, listen_backlog):
         # Initialize server socket
@@ -22,7 +22,7 @@ class Server:
         # the server
         while True:
             client_sock = self.__accept_new_connection()
-            self.__handle_client_connection(client_sock)
+            start_new_thread(self.__handle_client_connection, (client_sock,))
 
 
     def __handle_client_connection(self, client_sock):
