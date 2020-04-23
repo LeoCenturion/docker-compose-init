@@ -11,6 +11,7 @@ CONFIG_PATH = "/config/config.ini"
 def parse_param(path, env, param):
 	config = configparser.ConfigParser()
 	config.read(path)
+	print(config.sections())
 	print("{} config: {}".format(param, env in config  and config[env][param]) )
 	print("{} env: {}".format(param, os.getenv(param,None)))
 	try:

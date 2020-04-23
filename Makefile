@@ -41,3 +41,7 @@ test:
 cleanup:
 	rm docker-compose-dev-tmp.yaml
 .PHONY: cleanup
+
+inject-config:
+	./inject_config.sh
+.PHONY: inject-config

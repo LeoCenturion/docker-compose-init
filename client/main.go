@@ -26,10 +26,10 @@ func InitConfigEnv() (*viper.Viper, error) {
 	v.BindEnv("loop", "lapse")
 
 	//config file
-	v.SetConfigName("config")
+	v.SetConfigName("config.yaml")
 	v.SetConfigType("yaml")
 	v.AddConfigPath("/config/")
-	e := v.ReadInConfig()
+	v.ReadInConfig()
 
 	// Parse time.Duration variables and return an error
 	// if those variables cannot be parsed
@@ -41,7 +41,7 @@ func InitConfigEnv() (*viper.Viper, error) {
 		return nil, errors.Wrapf(err, "Could not parse CLI_LOOP_PERIOD env var as time.Duration.")
 	}
 
-	return v, e
+	return v, nil
 }
 
 
