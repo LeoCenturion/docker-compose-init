@@ -36,8 +36,8 @@ docker-compose-logs:
 
 test:
 	sudo ./server/healthcheck.sh
+.PHONY: test
 
 cleanup:
 	rm docker-compose-dev-tmp.yaml
-
-.PHONY: test
+.PHONY: cleanup
