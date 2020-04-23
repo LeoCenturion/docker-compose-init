@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 PWD := $(shell pwd)
-
+CLIENTS?=1
 GIT_REMOTE = github.com/7574-sistemas-distribuidos/docker-compose-init
 
 default: build
@@ -21,7 +21,8 @@ docker-image:
 .PHONY: docker-image
 
 docker-compose-up: docker-image
-	docker-compose -f docker-compose-dev.yaml up -d --build
+	python3 scale_client.py clients=$(CLIENTS)
+	docker-compose -f docker-compose-dev-tmp.yaml up -d --build
 .PHONY: docker-compose-up
 
 docker-compose-down:
@@ -30,11 +31,13 @@ docker-compose-down:
 .PHONY: docker-compose-down
 
 docker-compose-logs:
-	docker-compose -f docker-compose-dev.yaml logs -f
+	docker-compose -f docker-compose-dev-tmp.yaml logs -f
 .PHONY: docker-compose-logs
 
 test:
 	sudo ./server/healthcheck.sh
 
+cleanup:
+	rm docker-compose-dev-tmp.yaml
 
 .PHONY: test

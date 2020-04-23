@@ -8,6 +8,7 @@ services:
       - PYTHONUNBUFFERED=1
       - SERVER_IP=server
       - SERVER_LISTEN_BACKLOG=5
+      - SERVER_PORT=12345
     networks:
       testing_net:
         ipv4_address: 172.24.125.2 #server ip DO NOT DELETE COMMENT
@@ -15,13 +16,13 @@ services:
       - server-vol:/config
 
 
-  client1:
-    container_name: client1
+  client:
+    container_name: client
     image: client:latest
     entrypoint: /client
     environment:
       - CLI_ID=1
-      - CLI_SERVER_ADDRESS=server:12346
+      - CLI_SERVER_ADDRESS=server:12345
       - CLI_LOOP_LAPSE=1m2s
       - CLI_LOOP_PERIOD=10s
     volumes:
@@ -29,28 +30,10 @@ services:
 
     networks:
       testing_net:
-        ipv4_address: 172.24.125.3
+        #ipv4_address: 172.24.125.3
     depends_on:
       - server
 
-  client2:
-    container_name: client2
-    image: client:latest
-    entrypoint: /client
-    environment:
-      #- CLI_ID=2
-      - CLI_SERVER_ADDRESS=server:12346
-      - CLI_LOOP_LAPSE=1m2s
-      - CLI_LOOP_PERIOD=10s
-
-    volumes:
-      - client-vol:/config
-
-    networks:
-      testing_net:
-        ipv4_address: 172.24.125.4
-    depends_on:
-      - server
 volumes:
   client-vol:
   server-vol:
