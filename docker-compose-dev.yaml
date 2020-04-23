@@ -8,12 +8,12 @@ services:
       - PYTHONUNBUFFERED=1
       - SERVER_IP=server
       - SERVER_LISTEN_BACKLOG=5
-#      - SERVER_PORT=12345
+      - SERVER_PORT=12345
     networks:
       testing_net:
         ipv4_address: 172.24.125.2 #server ip DO NOT DELETE COMMENT
     volumes:
-      - ./config:/config
+      - server-vol:/config
 
   client:
     container_name: client
@@ -25,7 +25,7 @@ services:
       - CLI_LOOP_LAPSE=1m2s
       - CLI_LOOP_PERIOD=10s
     volumes:
-      - ./config:/config
+      - client-vol:/config
 
     networks:
       testing_net:

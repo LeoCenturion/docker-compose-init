@@ -9,6 +9,10 @@ from common.server import Server
 CONFIG_PATH = "/config/config.ini"
 
 def parse_param(path, env, param):
+	"""
+	Parse parameters from the config file and the enviroment and returns
+	a dictionary with key value pairs. For any given parameter the falue from the enviroment is figen preference to the one from the configuration file 
+	"""
 	config = configparser.ConfigParser()
 	config.read(path)
 	print(config.sections())
@@ -39,6 +43,9 @@ def parse_config_params(environment, config_path):
 	return config_params
 
 def parse_clargs():
+	"""
+	Parse console line arguments and returns a dictionary with key value pairs
+	"""
 	ret = {}
 	for arg in sys.argv[1:]:
 		s = arg.split("=")
