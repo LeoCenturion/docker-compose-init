@@ -11,7 +11,7 @@ CONFIG_PATH = "/config/config.ini"
 def parse_param(path, env, param):
 	"""
 	Parse parameters from the config file and the enviroment and returns
-	a dictionary with key value pairs. For any given parameter the falue from the enviroment is figen preference to the one from the configuration file 
+	a dictionary with key value pairs. For any given parameter the falue from the enviroment is figen preference to the one from the configuration file
 	"""
 	config = configparser.ConfigParser()
 	config.read(path)
@@ -19,7 +19,7 @@ def parse_param(path, env, param):
 	print("{} config: {}".format(param, env in config  and config[env][param]) )
 	print("{} env: {}".format(param, os.getenv(param,None)))
 	try:
-		return int(env in config  and config[env][param] or os.getenv(param))
+		return int(os.getenv(param) or env in config  and config[env][param])
 	except KeyError as e:
 		raise KeyError("Key was not found. Error: {} .Aborting server".format(e))
 	except ValueError as e:
